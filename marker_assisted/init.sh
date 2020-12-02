@@ -41,7 +41,7 @@ asm=$3		# asm.fasta
 meryldb=$4	# single-copy.meryl
 len_filt=$5
 
-cores=$SLURM_CPUS_PER_TASK
+cores=$NSLOTS
 if [ x$cores == "x" ]; then
 	echo "Use 16 cores by default"
 	cores=16
@@ -52,8 +52,6 @@ NUM_READS_PER_FILE=10000	# Increase or decrease depending on the read set
 
 echo "Extract $target aslignments from $alignment, split by $NUM_READS_PER_FILE unique read ids"
 echo
-
-module load samtools
 
 set -e
 
