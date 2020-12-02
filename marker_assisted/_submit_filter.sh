@@ -26,27 +26,24 @@ mkdir -p logs
 # computing requirements
 cpus=4
 mem=12g
-partition=norm
-walltime=2-0
-path=`pwd`
 
 # variables
 name=$target.convert
 args="$target $fa"
 log=logs/$name.%A_%a.log
 script=$SCRIPT/convert.sh
-extra="--array=1-$ARRAY_LEN"
+extra="-t 1-$ARRAY_LEN"
 
 echo "\
-sbatch -J $name --mem=$mem --partition=$partition --cpus-per-task=$cpus -D $path $extra --time=$walltime --error=$log --output=$log $script $args"
-sbatch -J $name --mem=$mem --partition=$partition --cpus-per-task=$cpus -D $path $extra --time=$walltime --error=$log --output=$log $script $args | awk '{print $NF}' > convert.jid
+qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e=$log -o=$log $extra $script $args"
+qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e=$log -o=$log $extra $script $args | tr "." "\t" | awk '{print $1}' > convert.jid
 
 ## Submit merge.sh
 # wait until filt.sh finishes
 cpus=24
-mem=32g
+mem=4g
 jid=`cat convert.jid`
-extra="--dependency=afterok:$jid"
+extra="hold_jid $jid"
 
 name=$target.merge
 args="$bam $target $fa $meryldb $len_filt"
@@ -54,6 +51,6 @@ log=logs/$name.%A_%a.log
 script=$SCRIPT/merge.sh
 
 echo "\
-sbatch -J $name --mem=$mem --partition=$partition --cpus-per-task=$cpus -D $path $extra --time=$walltime --error=$log --output=$log $script $args"
-sbatch -J $name --mem=$mem --partition=$partition --cpus-per-task=$cpus -D $path $extra --time=$walltime --error=$log --output=$log $script $args > merge.jid
+qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e=$log -o=$log $extra $script $args"
+qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e=$log -o=$log $extra $script $args > merge.jid
 
