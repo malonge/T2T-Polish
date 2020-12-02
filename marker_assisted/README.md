@@ -1,5 +1,8 @@
 # Marker assisted read filtering
 
+## malonge fork
+This fork adjusts the code to run on a UGE workload manager.
+
 ## Requires
 * meryl-1.0
 * python 2.7.3

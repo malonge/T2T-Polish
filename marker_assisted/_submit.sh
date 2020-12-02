@@ -1,5 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
+tools=/seq/schatz/malonge/bamdev1_src
 SCRIPT=$tools/T2T-Polish/marker_assisted
 echo $SCRIPT > SCRIPT
 
@@ -21,19 +22,15 @@ len_filt=$5
 echo $len_filt > LEN_FILT
 
 cpus=24
-mem=48g
+mem=4g
 name=$target.init
 script=$SCRIPT/init.sh
-
 args="$bam $target $fa $meryldb"
-partition=norm
-walltime=1-0
-path=`pwd`
 
 mkdir -p logs
 log=logs/$name.%A.log
 
 echo "\
-sbatch -J $name --mem=$mem --partition=$partition --cpus-per-task=$cpus -D $path $extra --time=$walltime --error=$log --output=$log $script $args"
-sbatch -J $name --mem=$mem --partition=$partition --cpus-per-task=$cpus -D $path $extra --time=$walltime --error=$log --output=$log $script $args
+qsub -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e=$log -o=$log $script $args"
+qsub -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e=$log -o=$log $script $args
 
