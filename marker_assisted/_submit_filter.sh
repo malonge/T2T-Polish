@@ -35,8 +35,8 @@ script=$SCRIPT/convert.sh
 extra="-t 1-$ARRAY_LEN"
 
 echo "\
-qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e=$log -o=$log $extra $script $args"
-qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e=$log -o=$log $extra $script $args | tr "." "\t" | awk '{print $1}' > convert.jid
+qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e $log -o $log $extra $script $args"
+qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e $log -o $log $extra $script $args | tr "." "\t" | awk '{print $1}' > convert.jid
 
 ## Submit merge.sh
 # wait until filt.sh finishes
@@ -51,6 +51,6 @@ log=logs/$name.%A_%a.log
 script=$SCRIPT/merge.sh
 
 echo "\
-qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e=$log -o=$log $extra $script $args"
-qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e=$log -o=$log $extra $script $args > merge.jid
+qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e $log -o $log $extra $script $args"
+qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e $log -o $log $extra $script $args > merge.jid
 

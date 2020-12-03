@@ -31,6 +31,6 @@ mkdir -p logs
 log=logs/$name.%A.log
 
 echo "\
-qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e=$log -o=$log $script $args"
-qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e=$log -o=$log $script $args
+qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e $log -o $log $script $args"
+qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e $log -o $log $script $args
 
