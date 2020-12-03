@@ -43,7 +43,7 @@ qsub -terse -N $name -l m_mem_free=$mem -S /bin/bash -pe threads $cpus -cwd -e $
 cpus=24
 mem=4g
 jid=`cat convert.jid`
-extra="hold_jid $jid"
+extra="-hold_jid $jid"
 
 name=$target.merge
 args="$bam $target $fa $meryldb $len_filt"
