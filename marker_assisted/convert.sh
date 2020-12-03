@@ -37,9 +37,9 @@ fi
 
 target=$1	# chrX
 asm=$2		# asm.fasta
-i=$SLURM_ARRAY_TASK_ID
+i=$SGE_TASK_ID
 
-cores=$SLURM_CPUS_PER_TASK
+cores=$NSLOTS
 if [ x$cores == "x" ]; then
 	echo "Use 16 cores by default"
 	cores=16
